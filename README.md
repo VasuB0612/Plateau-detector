@@ -55,6 +55,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 3. Open and run the file: `supabase/migrations/001_initial_schema.sql`
 
 This creates the required tables:
+
 - `profiles` - User profiles
 - `exercises` - Exercise definitions
 - `workouts` - Workout sessions
@@ -99,24 +100,24 @@ plateau-detector-web/
 
 The app analyzes weekly training volume to detect plateaus:
 
-| Status | Condition | Recommendation |
-|--------|-----------|----------------|
-| **OK** | Volume up >= 2% | Keep progressing |
+| Status      | Condition                | Recommendation                     |
+| ----------- | ------------------------ | ---------------------------------- |
+| **OK**      | Volume up >= 2%          | Keep progressing                   |
 | **Warning** | Volume change -2% to +2% | Consider increasing weight or reps |
-| **Plateau** | Volume down > 2% | Consider deload or program change |
+| **Plateau** | Volume down > 2%         | Consider deload or program change  |
 
 ## Migration from React Native
 
 This is a web port of the original React Native app. Key changes:
 
-| React Native | Next.js |
-|--------------|---------|
-| AsyncStorage | Supabase database |
-| react-native-paper | Tailwind CSS components |
-| React Navigation | Next.js App Router |
-| StyleSheet.create() | Tailwind classes |
-| View/Text | div/span/p |
-| Alert.alert() | window.confirm() |
+| React Native        | Next.js                 |
+| ------------------- | ----------------------- |
+| AsyncStorage        | Supabase database       |
+| react-native-paper  | Tailwind CSS components |
+| React Navigation    | Next.js App Router      |
+| StyleSheet.create() | Tailwind classes        |
+| View/Text           | div/span/p              |
+| Alert.alert()       | window.confirm()        |
 
 ## Scripts
 
@@ -124,7 +125,3 @@ This is a web port of the original React Native app. Key changes:
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
-
-## License
-
-MIT
