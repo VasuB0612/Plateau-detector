@@ -1,4 +1,4 @@
-# PlateauDetector Web
+# Plateau Detector
 
 A fitness tracking web application built with Next.js 14, Tailwind CSS, and Supabase.
 
