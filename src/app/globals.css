@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/* Hacker Theme - Clean & Readable */
+:root {
+  --background: #121212;
+  --background-secondary: #1a1a1a;
+  --foreground: #e8e8e8;
+  --card-bg: #161616;
+  --card-border: #2a2a2a;
+
+  /* Accent colors - Softer, less neon */
+  --primary: #4ade80;
+  --primary-hover: #22c55e;
+  --secondary: #60a5fa;
+  --secondary-hover: #3b82f6;
+
+  /* Status colors */
+  --ok: #4ade80;
+  --ok-bg: #0d1f12;
+  --warning: #facc15;
+  --warning-bg: #1a1a0a;
+  --danger: #f87171;
+  --danger-bg: #1f0d0d;
+
+  /* UI colors */
+  --border: #2a2a2a;
+  --border-hover: #4ade80;
+  --muted: #888888;
+  --input-bg: #1a1a1a;
+
+  /* Glow for hover - subtle */
+  --glow-color: rgba(74, 222, 128, 0.15);
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Blinking cursor effect */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+/* Selection color */
+::selection {
+  background: var(--primary);
+  color: var(--background);
+}
