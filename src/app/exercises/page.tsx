@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { Chip } from '@/components/ui/Chip';
 import { useWorkout } from '@/context/WorkoutContext';
 import { Exercise, MUSCLE_GROUPS } from '@/types';
@@ -16,6 +17,7 @@ export default function ExercisesPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
+  const [exerciseToDelete, setExerciseToDelete] = useState<Exercise | null>(null);
   const [name, setName] = useState('');
   const [muscleGroup, setMuscleGroup] = useState<string>('Chest');
   const [saving, setSaving] = useState(false);
@@ -74,8 +76,13 @@ export default function ExercisesPage() {
   };
 
   const handleDelete = (exercise: Exercise) => {
-    if (window.confirm(`Delete "${exercise.name}"? Workouts will remain.`)) {
-      deleteExercise(exercise.id);
+    setExerciseToDelete(exercise);
+  };
+
+  const confirmDelete = () => {
+    if (exerciseToDelete) {
+      deleteExercise(exerciseToDelete.id);
+      setExerciseToDelete(null);
     }
   };
 
@@ -230,6 +237,18 @@ export default function ExercisesPage() {
           </div>
         </div>
       </Modal>
+
+      {/* Delete confirmation modal */}
+      <ConfirmModal
+        isOpen={!!exerciseToDelete}
+        onClose={() => setExerciseToDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete Exercise"
+        message={`Are you sure you want to delete "${exerciseToDelete?.name}"? Your workout history will remain.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 }

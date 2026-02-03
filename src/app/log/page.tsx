@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { SetInput } from '@/components/workout/SetInput';
 import { ExercisePicker } from '@/components/workout/ExercisePicker';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { useWorkout } from '@/context/WorkoutContext';
 import { Exercise } from '@/types';
 
@@ -31,6 +32,7 @@ export default function LogWorkoutPage() {
   const [sets, setSets] = useState<SetData[]>([createEmptySet()]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleAddSet = () => {
     setSets([...sets, createEmptySet()]);
@@ -98,13 +100,7 @@ export default function LogWorkoutPage() {
       }));
 
       await addWorkout(selectedExercise.id, setsToSave);
-
-      if (window.confirm('Workout logged! Go to dashboard?')) {
-        router.push('/');
-      } else {
-        setSelectedExercise(undefined);
-        setSets([createEmptySet()]);
-      }
+      setShowSuccessModal(true);
     } catch (err) {
       setError('Failed to save. Try again.');
     } finally {
@@ -117,6 +113,17 @@ export default function LogWorkoutPage() {
     const reps = parseInt(set.reps) || 0;
     return sum + weight * reps;
   }, 0);
+
+  const handleGoToDashboard = () => {
+    setShowSuccessModal(false);
+    router.push('/');
+  };
+
+  const handleLogAnother = () => {
+    setShowSuccessModal(false);
+    setSelectedExercise(undefined);
+    setSets([createEmptySet()]);
+  };
 
   if (state.isLoading) {
     return (
@@ -214,6 +221,18 @@ export default function LogWorkoutPage() {
           </Button>
         </div>
       </main>
+
+      {/* Success modal */}
+      <ConfirmModal
+        isOpen={showSuccessModal}
+        onClose={handleLogAnother}
+        onConfirm={handleGoToDashboard}
+        title="Workout Logged!"
+        message="Your workout has been saved successfully. Would you like to go to the dashboard?"
+        confirmText="Go to Dashboard"
+        cancelText="Log Another"
+        variant="success"
+      />
     </div>
   );
 }

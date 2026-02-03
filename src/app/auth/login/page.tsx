@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Terminal, Loader2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { useAuth } from '@/context/AuthContext';
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Terminal, Loader2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
   const { signIn, isLoading: authLoading } = useAuth();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,7 +23,7 @@ export default function LoginPage() {
     setError(null);
 
     if (!email || !password) {
-      setError('Email and password required');
+      setError("Email and password required");
       return;
     }
 
@@ -34,10 +34,10 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else {
-        router.push('/');
+        router.push("/");
       }
     } catch (err) {
-      setError('An unexpected error occurred');
+      setError("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -70,10 +70,6 @@ export default function LoginPage() {
         {/* Login form */}
         <Card>
           <CardContent className="p-6">
-            <h2 className="text-sm text-[var(--muted)] mb-6 text-center">
-              Sign In
-            </h2>
-
             <form onSubmit={handleSubmit} className="space-y-5">
               <Input
                 label="Email"
@@ -112,7 +108,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center border-t border-[var(--border)] pt-6">
               <p className="text-[var(--muted)] text-sm">
-                New here?{' '}
+                New here?{" "}
                 <Link
                   href="/auth/signup"
                   className="text-[var(--primary)] hover:underline"

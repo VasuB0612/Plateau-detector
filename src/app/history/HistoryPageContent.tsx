@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { Filter, Loader2, ChevronDown } from "lucide-react";
 import { Navigation } from "@/components/layout/Navigation";
 import { Card, CardContent } from "@/components/ui/Card";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { WorkoutCard } from "@/components/workout/WorkoutCard";
 import { useWorkout } from "@/context/WorkoutContext";
 import { Workout } from "@/types";
@@ -17,6 +18,7 @@ export default function HistoryPageContent() {
     initialExerciseId,
   );
   const [showFilter, setShowFilter] = useState(false);
+  const [workoutToDelete, setWorkoutToDelete] = useState<Workout | null>(null);
 
   const sortedWorkouts = useMemo(() => {
     let workouts = [...state.workouts];
@@ -40,8 +42,13 @@ export default function HistoryPageContent() {
     : null;
 
   const handleDelete = (workout: Workout) => {
-    if (window.confirm("Delete this workout?")) {
-      deleteWorkout(workout.id);
+    setWorkoutToDelete(workout);
+  };
+
+  const confirmDelete = () => {
+    if (workoutToDelete) {
+      deleteWorkout(workoutToDelete.id);
+      setWorkoutToDelete(null);
     }
   };
 
@@ -168,6 +175,18 @@ export default function HistoryPageContent() {
           onClick={() => setShowFilter(false)}
         />
       )}
+
+      {/* Delete confirmation modal */}
+      <ConfirmModal
+        isOpen={!!workoutToDelete}
+        onClose={() => setWorkoutToDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete Workout"
+        message="Are you sure you want to delete this workout? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   );
 }
