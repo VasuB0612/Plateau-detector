@@ -16,47 +16,51 @@ export function detectPlateau(
   workouts: Workout[],
   exercise: Exercise
 ): PlateauAnalysis {
-  const weeklyVolumes = getWeeklyVolumes(workouts, exercise.id, 2);
-  const [previousWeek, currentWeek] = weeklyVolumes;
+  const weeklyVolumes = getWeeklyVolumes(workouts, exercise.id, 3);
+  const [twoWeeksAgo, lastWeek, currentWeek] = weeklyVolumes;
 
-  // If no data for either week, return OK with message
-  if (previousWeek === 0 && currentWeek === 0) {
+  // If no data for either completed week, check current week
+  if (twoWeeksAgo === 0 && lastWeek === 0) {
     return {
       exerciseId: exercise.id,
       exerciseName: exercise.name,
       status: 'ok',
       weeklyVolumes,
       trend: 0,
-      message: 'No workout data yet. Start logging to track progress!',
+      message: currentWeek > 0
+        ? 'Week in progress — keep it up! Full comparison available next week.'
+        : 'No workout data yet. Start logging to track progress!',
     };
   }
 
-  // If only current week has data
-  if (previousWeek === 0) {
+  // If only last week has data (no two-weeks-ago data)
+  if (twoWeeksAgo === 0) {
     return {
       exerciseId: exercise.id,
       exerciseName: exercise.name,
       status: 'ok',
       weeklyVolumes,
       trend: 100,
-      message: 'Great start! Keep logging to track your progress.',
+      message: 'Great start! One more completed week needed for comparison.',
     };
   }
 
-  // If only previous week has data (no recent workout)
-  if (currentWeek === 0) {
+  // If only two weeks ago has data (nothing last week)
+  if (lastWeek === 0) {
     return {
       exerciseId: exercise.id,
       exerciseName: exercise.name,
       status: 'warning',
       weeklyVolumes,
       trend: -100,
-      message: 'No workout this week yet. Time to train!',
+      message: currentWeek > 0
+        ? 'Missed last week, but you\'re back this week!'
+        : 'No workout last week. Time to get back on track!',
     };
   }
 
-  // Calculate percentage change
-  const trend = calculatePercentageChange(previousWeek, currentWeek);
+  // Calculate percentage change between two completed weeks
+  const trend = calculatePercentageChange(twoWeeksAgo, lastWeek);
 
   // Determine status based on thresholds
   let status: 'ok' | 'warning' | 'plateau';
@@ -64,13 +68,13 @@ export function detectPlateau(
 
   if (trend >= GROWTH_THRESHOLD) {
     status = 'ok';
-    message = `Volume up ${trend.toFixed(1)}%. Keep up the great work!`;
+    message = `Volume up ${trend.toFixed(1)}% last week. Keep up the great work!`;
   } else if (trend > -GROWTH_THRESHOLD) {
     status = 'warning';
-    message = `Volume stagnant (${trend.toFixed(1)}%). Consider increasing weight or reps.`;
+    message = `Volume stagnant (${trend.toFixed(1)}%) last week. Consider increasing weight or reps.`;
   } else {
     status = 'plateau';
-    message = `Volume down ${Math.abs(trend).toFixed(1)}%. Consider deload or program change.`;
+    message = `Volume down ${Math.abs(trend).toFixed(1)}% last week. Consider deload or program change.`;
   }
 
   return {

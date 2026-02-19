@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Terminal, Loader2 } from "lucide-react";
+import Image from "next/image";
+import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -57,7 +58,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 border border-[var(--primary)] mb-6">
-            <Terminal className="w-8 h-8 text-[var(--primary)]" />
+            <Image src="/icon.svg" alt="PlateauDetector" width={40} height={40} />
           </div>
           <h1 className="text-xl font-medium text-[var(--foreground)]">
             PlateauDetector

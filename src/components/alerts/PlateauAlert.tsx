@@ -32,11 +32,12 @@ const STATUS_CONFIG = {
 
 export function PlateauAlert({ analysis }: PlateauAlertProps) {
   const config = STATUS_CONFIG[analysis.status];
-  const [previousWeek, currentWeek] = analysis.weeklyVolumes;
+  const [twoWeeksAgo, lastWeek, currentWeek] = analysis.weeklyVolumes;
 
-  const maxVolume = Math.max(previousWeek, currentWeek, 1);
-  const previousProgress = (previousWeek / maxVolume) * 100;
-  const currentProgress = (currentWeek / maxVolume) * 100;
+  const maxVolume = Math.max(twoWeeksAgo, lastWeek, currentWeek, 1);
+  const twoWeeksAgoProgress = (twoWeeksAgo / maxVolume) * 100;
+  const lastWeekProgress = (lastWeek / maxVolume) * 100;
+  const currentWeekProgress = (currentWeek / maxVolume) * 100;
 
   return (
     <Link href={`/history?exercise=${analysis.exerciseId}`}>
@@ -66,15 +67,28 @@ export function PlateauAlert({ analysis }: PlateauAlertProps) {
         {/* Volume comparison */}
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <span className="text-[10px] text-[var(--muted)] w-16">Last week</span>
+            <span className="text-[10px] text-[var(--muted)] w-16">2 wks ago</span>
             <div className="flex-1 h-2 bg-[var(--background)] overflow-hidden">
               <div
                 className="h-full bg-[var(--muted)] transition-all"
-                style={{ width: `${previousProgress}%` }}
+                style={{ width: `${twoWeeksAgoProgress}%` }}
               />
             </div>
             <span className="text-[10px] text-[var(--foreground)] w-16 text-right">
-              {previousWeek.toFixed(0)} kg
+              {twoWeeksAgo.toFixed(0)} kg
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] text-[var(--muted)] w-16">Last week</span>
+            <div className="flex-1 h-2 bg-[var(--background)] overflow-hidden">
+              <div
+                className={cn('h-full transition-all', config.progressColor)}
+                style={{ width: `${lastWeekProgress}%` }}
+              />
+            </div>
+            <span className="text-[10px] text-[var(--foreground)] w-16 text-right">
+              {lastWeek.toFixed(0)} kg
             </span>
           </div>
 
@@ -82,18 +96,18 @@ export function PlateauAlert({ analysis }: PlateauAlertProps) {
             <span className="text-[10px] text-[var(--muted)] w-16">This week</span>
             <div className="flex-1 h-2 bg-[var(--background)] overflow-hidden">
               <div
-                className={cn('h-full transition-all', config.progressColor)}
-                style={{ width: `${currentProgress}%` }}
+                className="h-full bg-[var(--muted)] transition-all opacity-50 border border-dashed border-[var(--foreground)]"
+                style={{ width: `${currentWeekProgress}%` }}
               />
             </div>
-            <span className="text-[10px] text-[var(--foreground)] w-16 text-right">
-              {currentWeek.toFixed(0)} kg
+            <span className="text-[10px] text-[var(--muted)] w-16 text-right">
+              {currentWeek > 0 ? `${currentWeek.toFixed(0)} kg` : '—'}
             </span>
           </div>
         </div>
 
-        {/* Trend */}
-        {analysis.trend !== 0 && previousWeek > 0 && currentWeek > 0 && (
+        {/* Trend (between completed weeks) */}
+        {analysis.trend !== 0 && twoWeeksAgo > 0 && lastWeek > 0 && (
           <p
             className={cn(
               'mt-3 text-xs text-right',

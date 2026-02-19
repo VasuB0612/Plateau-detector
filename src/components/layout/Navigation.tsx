@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home, History, Dumbbell, Plus, LogOut, Terminal } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useAuth } from '@/context/AuthContext';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { Home, History, Dumbbell, Plus, LogOut } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
-  { href: '/', label: 'Home', icon: Home },
-  { href: '/history', label: 'History', icon: History },
-  { href: '/exercises', label: 'Exercises', icon: Dumbbell },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/history", label: "History", icon: History },
+  { href: "/exercises", label: "Exercises", icon: Dumbbell },
 ];
 
 export function Navigation() {
@@ -19,17 +20,14 @@ export function Navigation() {
 
   return (
     <>
-      {/* Desktop sidebar */}
       <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-[var(--card-bg)] border-r border-[var(--border)]">
-        {/* Logo */}
         <div className="flex items-center h-16 px-4 border-b border-[var(--border)]">
-          <Terminal className="w-5 h-5 text-[var(--primary)]" />
+          <Image src="/icon.svg" alt="PlateauDetector" width={28} height={28} />
           <span className="ml-3 text-sm font-medium text-[var(--foreground)]">
             PlateauDetector
           </span>
         </div>
 
-        {/* Nav links */}
         <nav className="flex-1 px-3 py-4 space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -38,10 +36,10 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex items-center px-3 py-2.5 text-sm transition-colors',
+                  "flex items-center px-3 py-2.5 text-sm transition-colors",
                   isActive
-                    ? 'bg-[var(--primary)] text-[var(--background)]'
-                    : 'text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-secondary)]'
+                    ? "bg-[var(--primary)] text-[var(--background)]"
+                    : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-secondary)]",
                 )}
               >
                 <item.icon className="w-4 h-4 mr-3" />
@@ -54,10 +52,10 @@ export function Navigation() {
           <Link
             href="/log"
             className={cn(
-              'flex items-center px-3 py-2.5 text-sm mt-4',
-              'text-[var(--secondary)] border border-[var(--secondary)]',
-              'hover:bg-[var(--secondary)] hover:text-[var(--background)]',
-              'transition-colors'
+              "flex items-center px-3 py-2.5 text-sm mt-4",
+              "text-[var(--secondary)] border border-[var(--secondary)]",
+              "hover:bg-[var(--secondary)] hover:text-[var(--background)]",
+              "transition-colors",
             )}
           >
             <Plus className="w-4 h-4 mr-3" />
@@ -73,9 +71,9 @@ export function Navigation() {
           <button
             onClick={signOut}
             className={cn(
-              'flex items-center w-full px-3 py-2 text-sm',
-              'text-[var(--danger)] border border-[var(--border)]',
-              'hover:border-[var(--danger)] transition-colors'
+              "flex items-center w-full px-3 py-2 text-sm",
+              "text-[var(--danger)] border border-[var(--border)]",
+              "hover:border-[var(--danger)] transition-colors",
             )}
           >
             <LogOut className="w-4 h-4 mr-2" />
@@ -88,15 +86,17 @@ export function Navigation() {
       <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-[var(--card-bg)] border-b border-[var(--border)] z-40">
         <div className="flex items-center justify-between h-full px-4">
           <div className="flex items-center">
-            <Terminal className="w-5 h-5 text-[var(--primary)]" />
+            <Image
+              src="/icon.svg"
+              alt="PlateauDetector"
+              width={28}
+              height={28}
+            />
             <span className="ml-2 text-sm font-medium text-[var(--foreground)]">
               PlateauDetector
             </span>
           </div>
-          <button
-            onClick={signOut}
-            className="p-2 text-[var(--danger)]"
-          >
+          <button onClick={signOut} className="p-2 text-[var(--danger)]">
             <LogOut className="w-5 h-5" />
           </button>
         </div>
@@ -112,8 +112,8 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex flex-col items-center justify-center flex-1 h-full',
-                  isActive ? 'text-[var(--primary)]' : 'text-[var(--muted)]'
+                  "flex flex-col items-center justify-center flex-1 h-full",
+                  isActive ? "text-[var(--primary)]" : "text-[var(--muted)]",
                 )}
               >
                 <item.icon className="w-5 h-5" />
